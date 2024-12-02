@@ -1,0 +1,313 @@
+effect every_vassal_or_below  = { every_courtier = {
+    if = {
+        limit = {
+            or = {
+                has_culture = culture:greek
+                has_culture = culture:norse
+            }
+        }
+        set_culture = ROOT.culture
+    }
+}}
+effect every_courtier  = {
+    if = {
+        limit = {
+            or = {
+                has_culture = culture:greek
+                has_culture = culture:norse
+            }
+        }
+        set_culture = ROOT.culture
+    }
+}
+
+#CONVERT Courtiers, Vassals, and their courtiers
+effect every_courtier = { set_culture = ROOT.culture set_character_faith = ROOT.faith } every_vassal_or_below = { set_culture = ROOT.culture set_character_faith = ROOT.faith every_courtier = { set_culture = ROOT.culture set_character_faith = ROOT.faith } }
+
+
+#REMOVE SMALLPOX
+effect every_courtier = { remove_trait = smallpox } every_vassal_or_below = { remove_trait = smallpox every_courtier = { remove_trait = smallpox } }
+
+#ADD SHIELDMAIDEN
+effect every_courtier = { limit = { AND = { is_female = yes is_concubine_of = root OR = { has_trait = lifestyle_blademaster prowess >= 12 } } } add_trait = shieldmaiden }
+effect every_courtier = { limit = { AND = { is_female = yes is_concubine_of = root has_trait = shieldmaiden NOT = { has_trait = lifestyle_blademaster } } } add_trait = lifestyle_blademaster }
+effect every_courtier = { limit = { has_trait = craven } remove_trait = craven add_trait = brave }
+effect every_courtier = { limit = { AND = { is_female = yes is_concubine_of = root } } add_trait = loyal }
+
+effect every_courtier = { limit = { has_trait = education_martial } remove_trait = education_martial add_trait = education_martial_4 }
+
+
+effect every_courtier = { limit = { OR = { culture = culture:norse culture = culture:sami culture = culture:finnish culture = culture:estonian } } set_culture = ROOT.culture } every_vassal_or_below = { limit = { OR = { culture = culture:norse culture = culture:sami culture = culture:finnish culture = culture:estonian } } set_culture = ROOT.culture every_courtier = { limit = { OR = { culture = culture:norse culture = culture:sami culture = culture:finnish culture = culture:estonian } } set_culture = ROOT.culture } }
+
+
+#####
+effect every_vassal_or_below = { every_courtier = { limit = { OR = { culture = culture:prussian culture = culture:dutch culture = culture:saxon culture = culture:karelian culture = culture:lithuanian culture = culture:pommeranian } } set_culture = ROOT.culture } }
+
+effect every_vassal_or_below = { limit = { OR = { culture = culture:norse culture = culture:sami culture = culture:finnish culture = culture:estonian culture = culture:czech culture = culture:polabian } } set_culture = ROOT.culture }
+
+effect every_vassal_or_below = { every_courtier = { limit = { OR = { culture = culture:norse culture = culture:sami culture = culture:finnish culture = culture:estonian culture = culture:czech culture = culture:polabian } } set_culture = ROOT.culture } }
+
+effect every_vassal_or_below = { limit = { OR = { culture = culture:pommeranian culture = culture:sami culture = culture:finnish culture = culture:estonian culture = culture:czech culture = culture:polabian } } set_culture = ROOT.culture }
+
+effect every_vassal_or_below = { every_courtier = { limit = { OR = { culture = culture:pommeranian culture = culture:sami culture = culture:finnish culture = culture:estonian culture = culture:czech culture = culture:polabian } } set_culture = ROOT.culture } }
+######
+effect every_courtier = { limit = { OR = { culture = culture:prussian culture = culture:dutch culture = culture:saxon culture = culture:karelian culture = culture:lithuanian culture = culture:pommeranian } } set_culture = ROOT.culture } 
+
+effect every_courtier = { limit = { OR = { culture = culture:norse culture = culture:sami culture = culture:finnish culture = culture:estonian culture = culture:czech culture = culture:polabian } } set_culture = ROOT.culture }
+
+effect every_vassal_or_below = { limit = { OR = { culture = culture:pommeranian culture = culture:saxon culture = culture:swabian culture = culture:dutch } } set_culture = ROOT.culture }
+
+effect every_adult = { limit = { OR = { culture = culture:pommeranian culture = culture:saxon culture = culture:swabian culture = culture:dutch } } set_culture = ROOT.culture }
+
+
+effect every_courtier = { limit = { is_sibling_of = root } this = { get_title = root.primary_title } }
+
+#####
+
+
+effect every_courtier = { limit = { OR = { culture = culture:norse culture = culture:czech culture = culture:finnish culture = culture:estonian } } set_culture = ROOT.culture } every_vassal_or_below = { limit = { OR = { culture = culture:norse culture = culture:sami culture = culture:finnish culture = culture:estonian } } set_culture = ROOT.culture every_courtier = { limit = { OR = { culture = culture:norse culture = culture:sami culture = culture:finnish culture = culture:estonian } } set_culture = ROOT.culture } }
+
+
+effect every_courtier = { set_culture = ROOT.culture set_character_faith = ROOT.faith } every_vassal_or_below = { set_culture = ROOT.culture set_character_faith = ROOT.faith every_courtier = { set_culture = ROOT.culture set_character_faith = ROOT.faith } }
+
+effect every_courtier = { set_character_faith = ROOT.faith }
+
+effect every_vassal_or_below = { set_culture = ROOT.culture }
+effect every_vassal_or_below = { set_character_faith = ROOT.faith }
+
+
+effect every_vassal_or_below = { limit = { OR = { culture = norse culture = breton culture = french } } set_culture = ROOT.culture }
+
+effect every_child = { set_culture = ROOT.culture }
+effect every_child = { set_character_faith = ROOT.faith }
+
+effect every_vassal = { every_child = { set_culture = ROOT.culture }}
+effect every_vassal = { every_child = { set_character_faith = ROOT.faith }}
+effect every_vassal = { primary_spouse = { set_character_faith = ROOT.faith }}
+
+effect every_vassal = { every_child = { every_child = { set_culture = ROOT.culture }}}
+effect every_vassal = { every_child = { every_child = { set_character_faith = ROOT.faith }}}
+
+effect = { every_vassal_or_below  = { set_culture = root.culture }}
+effect = { every_vassal_or_below  = { set_character_faith = root.faith }}
+
+effect = { root.culture = {add_culture_tradition = tradition_fp1_coastal_warriors }}
+effect = { root.culture = {add_culture_tradition = tradition_maritime_merchantalism }}
+effect = { root.culture = {add_culture_tradition = tradition_fp1_performative_honour }}
+
+
+
+#COUNTY CULTURE/FAITH
+effect = { every_sub_realm_county = { set_county_culture = root.culture }}
+effect = { every_sub_realm_county = { set_county_faith = root.faith }}
+effect = { every_sub_realm_county = { set_county_culture = root.culture set_county_faith = root.faith }}
+
+
+effect = { every_sub_realm_county = { limit = { OR = { culture = culture:sami culture = culture:estonian culture = culture:finnish culture = culture:norse } } set_county_culture = root.culture } } 
+effect = { every_sub_realm_county = { limit = { OR = { culture = culture:latgalian culture = culture:prussian culture = culture:lithuanian culture = culture:karelian culture = culture:norse } } set_county_culture = root.culture } }
+
+effect = { every_sub_realm_county = { limit = { OR = { culture = culture:pommeranian } } set_county_culture = root.culture } }
+
+effect = { every_sub_realm_county = { limit = { OR = { culture = culture:czech culture = culture:polabian } } set_county_culture = root.culture } }
+
+effect = { every_sub_realm_county = { limit = { OR = { culture = culture:dutch culture = culture:saxon } } set_county_culture = root.culture } }
+
+effect = { every_held_title = { limit = { tier = tier_county } set_county_culture = root.culture }}
+effect = { every_held_title = { limit = { tier = tier_county } set_county_faith = root.faith }}
+
+effect = { every_held_county = { set_county_culture = root.culture set_county_faith = root.faith}}
+
+effect every_held_title = { character:33567374 = { get_title = prev } }
+
+effect title:c_byzantion = { set_de_jure_liege_title = title:x_script_713 }
+
+#TITLE CULTURE FAITH	
+effect = { title:e_north_sea = { every_de_jure_county = { set_county_culture = root.culture }}}
+effect = { title:e_north_sea = { every_de_jure_county = { set_county_faith = root.faith }}}
+
+#TITLE DE JURE CHANGE
+effect every_realm_de_jure_duchy = { set_de_jure_liege_title = title:k_france }
+effect title:k_sapmi = { every_de_jure_duchy = { set_de_jure_liege_title = title:k_finland }}
+effect title:d_skane = { set_de_jure_liege_title = title:k_sweden }
+effect title:c_raniriki = { set_de_jure_liege_title = title:d_vastergotland }
+effect title:c_raniriki = { set_de_jure_liege_title = title:d_vastergotland }
+effect title:c_skane = { set_de_jure_liege_title = title:d_smaland }
+
+effect title:c_byzantion = { set_de_jure_liege_title = title:d_gotland }
+effect title:k_england = { set_de_jure_liege_title = title:e_scandinavia }
+effect title:k_scotland = { set_de_jure_liege_title = title:e_scandinavia }
+effect title:k_esthonia = { set_de_jure_liege_title = title:e_scandinavia }
+effect title:k_lithuania = { set_de_jure_liege_title = title:e_scandinavia }
+effect title:k_pommerania = { set_de_jure_liege_title = title:e_scandinavia }
+
+effect title:k_mann_the_isles = { set_de_jure_liege_title = title:e_scandinavia }
+
+effect title:d_guoldot = { set_de_jure_liege_title = title:k_finland }
+effect title:d_guoldot = { set_de_jure_liege_title = title:k_finland }
+effect title:d_ = { set_de_jure_liege_title = title:k_esthonia }
+effect title:k_aquitaine = { set_de_jure_liege_title = title:e_north_sea }
+
+
+effect title:k_italy = { set_de_jure_liege_title = title:e_north_sea }
+effect title:k_romagna = { set_de_jure_liege_title = title:e_north_sea }
+effect title:k_dacia = { set_de_jure_liege_title = title:e_byzantium }
+
+effect every_duchy = { if = {limit = { has_de_jure_liege_title = title:k_sapmi } set_de_jure_liege_title = title:k_finland } }
+
+#WAR
+	#END WAR
+effect title:c_varmland = { every_de_jure_top_liege = { every_character_war = { end_war = white_peace } } }
+
+effect title:e_wendish_empire = { every_de_jure_county = { every_de_jure_top_liege = { every_character_war = { end_war = white_peace } } } }
+
+	#JOIN WAR
+effect title:k_france = { every_de_jure_top_liege = { every_character_war = { save_scope_as = my_war }} } every_vassal_or_below = { scope:my_war = { add_defender = prev } }
+
+#my minions join my attack
+effect every_character_war = { if = { limit = { primary_attacker = ROOT } save_scope_as = my_war ROOT = { every_vassal_or_below = { scope:my_war = { add_attacker = prev } } } } }
+
+`
+
+effect = {every_character_war = {limit = { primary_attacker = ROOT } every_vassal_or_below = { NOT = { is_attacker_in_war = prev } add_attacker = this}}}
+
+
+#my minions join my defense
+effect every_character_war = {if = {limit = {primary_attacker = ROOT} save_scope_as = my_war}} every_vassal_or_below = { scope:my_war = { add_attacker = prev }}
+
+
+#add realm kingdoms to liege of empire title
+effect title:e_roman_empire.holder.top_liege = { every_realm_de_jure_kingdom = { set_de_jure_liege_title = title:e_roman_empire }}
+effect every_kingdom = { limit = { de_jure_liege = title:e_scandinavia } set_de_jure_liege_title = title:e_wendish_empire }
+
+effect every_vassal_or_below = {
+    if = {
+        limit = {
+            or = {
+                has_culture = culture:french
+                has_culture = culture:norse
+            }
+        }
+        set_culture = ROOT.culture
+        set_character_faith = ROOT.faith
+    }
+}
+
+# county control
+effect = { every_sub_realm_county = { change_county_control = 100 }
+
+effect = { root.culture = {add_culture_tradition = tradition_metal_craftsmanship }}
+effect = { root.culture = {add_culture_tradition = tradition_maritime_mercantilism }}
+effect = { root.culture = {add_culture_tradition = tradition_fp1_coastal_warriors }}
+effect = { root.culture = {add_culture_tradition = tradition_fp1_performative_honour }}
+effect = { root.culture = {add_culture_tradition = tradition_polygamous }}
+
+discover_innovation innovation_wootz_steel 
+
+#change capital of title
+effect = { title:e_north_sea = { set_capital_county = title:c_roma }}
+effect = { title:d_gotland = { set_capital_county = title:c_byzantion }}
+
+#change realm capital
+effect = { root = { set_realm_capital = title:c_roma } }
+
+
+#SCOPE PLAYER TITLE THEN DO THING TO CUSTOM TITLE
+effect = { every_held_title = { limit = { tier = tier_duchy } save_scope_as = player_duchy_scope } title:c_byzantion = { set_de_jure_liege_title = scope:player_duchy_scope}}
+effect = { every_held_title = { limit = { tier = tier_kingdom } save_scope_as = player_kingdom_scope } title:d_krete = { set_de_jure_liege_title = scope:player_kingdom_scope}}
+effect = { every_held_title = { limit = { tier = tier_empire } save_scope_as = player_empire_scope } title:k_bulgaria = { set_de_jure_liege_title = scope:player_empire_scope}}
+
+effect = { every_held_title = { limit = { tier = tier_kingdom } set_de_jure_liege_title = title:e_wendish_empire } }
+
+effect = { every_held_title = { limit = { tier = tier_kingdom } save_scope_as = player_kingdom_scope } scope:player_kingdom_scope = { set_capital_county = title:c_byzantion }}
+effect = { every_held_title = { limit = { tier = tier_empire } save_scope_as = player_empire_scope } scope:player_empire_scope = { set_capital_county = title:c_byzantion }}
+
+effect = { every_held_title = { limit = { tier = tier_empire } save_scope_as = player_empire_scope } every_held_title = { limit = { tier = tier_kingdom  } set_de_jure_liege_title = scope:player_empire_scope}}
+
+# SCOPE PLAYER TITLE CHANGE PROVINCE PEOPLE AND FAITH
+effect = { every_held_title = { limit = { tier = tier_kingdom } save_scope_as = player_kingdom_scope } scope:player_kingdom_scope = { every_de_jure_county = { set_county_culture = root.culture }}}
+effect = { every_held_title = { limit = { tier = tier_kingdom } save_scope_as = player_kingdom_scope } scope:player_kingdom_scope = { every_de_jure_county = { set_county_faith = root.faith }}}
+
+
+effect = { every_held_title = { limit = { tier = tier_empire } save_scope_as = player_empire_scope scope:player_empire_scope = { every_de_jure_kingdom = { set_county_culture = root.culture }}}} 
+effect = { every_held_title = { limit = { tier = tier_empire } save_scope_as = player_empire_scope scope:player_empire_scope = { every_de_jure_kingdom = { set_county_faith = root.faith }}}} 
+
+effect = { every_held_title = { limit = { tier = tier_empire } save_scope_as = player_empire_scope scope:player_empire_scope = { every_de_jure_kingdom = { set_de_jure_liege_title = title:e_byzantium }}}}
+
+
+
+effect every_realm_de_jure_kingdom = { set_de_jure_liege_title = title:e_scandinavia }
+effect every_realm_de_jure_kingdom = { limit = { NOT = {title = title:k_croatia } } set_de_jure_liege_title = title:e_byzantium }
+
+
+
+effect every_character_war = {if = {limit = {primary_attacker = ROOT} save_scope_as = my_war}} every_vassal_or_below = { scope:my_war = { add_attacker = prev }
+effect every_character_war = { if = { limit = { primary_attacker = ROOT } save_scope_as = my_war ROOT = { every_vassal_or_below = { scope:my_war = { add_attacker = prev } } } } }
+
+
+effect title:k_france = { every_de_jure_top_liege = { every_character_war = { save_scope_as = my_war }} } every_vassal_or_below = { scope:my_war = { add_defender = prev } }
+
+effect = { every_held_title = { limit = { tier = tier_kingdom } save_scope_as = player_kingdom_scope title:d_nordmark = { set_de_jure_liege_title = scope:player_kingdom_scope} title:d_pomerelia = { set_de_jure_liege_title = scope:player_kingdom_scope} } } 
+
+
+any_realm_de_jure_kingdom = {}
+
+
+effect title:k_lithuania = { set_de_jure_liege_title = title:e_scandinavia }}
+effect = { every_held_title = { limit = { tier = tier_kingdom } save_scope_as = player_kingdom_scope scope:player_kingdom_scope = {set_de_jure_liege_title = title:e_scandinavia}} } 
+
+
+effect every_vassal_or_below = { limit = { has_culture = root.culture } every_held_title = { limit = { AND = { tier = tier_county title:e_scandinavia = { is_de_jure_liege_or_above_target = prev } } } set_county_culture = root.culture } }
+
+effect every_vassal_or_below = { limit = { has_faith = root.faith } every_held_title = { limit = { AND = { tier = tier_county title:e_scandinavia = { is_de_jure_liege_or_above_target = prev } } } set_county_faith = root.faith } }
+
+
+
+if = {
+        limit = {
+            has_culture = culture:norse  
+        }
+        
+}
+
+
+effect = { spawn_army = { levies = 200 men_at_arms = { type = huscarl men = 50 } men_at_arms = { type = vigmen men = 50 } men_at_arms = { type = bondi men = 100 } location = scope:root.capital_province inheritable = no name = grizzled_veterans } }
+
+
+effect = { every_held_county = { limit = { development_level < 30  } change_development_level = 10 } }
+
+
+# seems to be test for state : culture = { has_cultural_pillar = heritage_north_germanic }
+
+#people: has_culture = viking
+
+
+event fp1_yearly.2300
+
+event major_decisions.2001
+
+
+#baby time
+effect every_courtier = { limit = { AND = { is_female = ye is_pregnant = no age <= 42 OR = { is_spouse_of = root is_concubine_of = root } } } make_pregnant = { father = root } }
+
+effect every_courtier = { limit = { is_male = yes } primary_spouse = { limit = { AND = { is_pregnant = no age <= 42 } } make_pregnant = { father = prev }  } }
+
+
+
+
+#heal county
+effect every_held_county = { add_county_modifier = { modifier = sacred_touch years = 10 } }
+
+effect every_held_county = { add_county_modifier = { modifier = minor_plague_resistance years = 10 } }
+
+
+effect title:b_uppsala = { add_building = temple_of_uppsala_01 }
+
+effect every_courtier = {limit = {AND = { age >= 16 is_married = no is_female = no}} save_scope_as = dude root = {every_courtier = {limit = { AND = {is_female = yes is_married = no age >=30 }} scope:dude = {marry = prev} }} }
+
+
+effect every_courtier = {limit = {AND = {age >= 16 is_married = no is_female = no}} save_scope_as = dude root = {ordered_courtier = {limit = {AND = {is_female = yes is_married = no age >=30 order_by = age position = 0}}scope:dude = {marry = prev}}}}
+
+effect ordered_courtier = {limit = {AND = {age >= 16 is_married = no is_female = no order_by = age}} save_scope_as = dude root = {ordered_courtier = {limit = {AND = {is_female = yes is_married = no age >=30 order_by = age position = 0}}scope:dude = {marry = prev}}}}
+
+
+#root = { marry_matrilineal = 

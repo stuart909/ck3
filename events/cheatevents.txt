@@ -1,0 +1,1391 @@
+namespace = cheatevents
+
+cheatevents.1000 = {
+	type = character_event
+	title = "Cheat Event 1000"
+	desc = "Main Cheat Menu"
+	theme = feast_activity
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	override_background = { reference = tavern }
+	
+	option = {
+		name = "Courtiers"
+		trigger_event = { id = cheatevents.1001 } 
+	}
+	
+	option = {
+		name = "Children"
+		trigger_event = { id = cheatevents.1002 } 
+	}
+	
+	option = {
+		name = "Dynasty"
+		trigger_event = { id = cheatevents.1003 } 
+	}
+	
+	option = {
+		name = "Exit"
+	}
+}
+
+cheatevents.1001 = {
+	type = character_event
+	title = "Courtiers Menu"
+	desc = "Menu to make major alterations to the courtiers in your court or camp."
+	theme = feast_activity
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	override_background = { reference = tavern }
+		
+	option = {
+		name = "Courtiers Marry"
+		ordered_courtier = {
+			limit = {
+				AND = {
+					age >= 16
+					age <= 50
+					is_married = no
+					is_betrothed = no
+					is_female = no
+					NOT = {
+						OR = {
+							is_visibly_fertile = no
+							has_trait = infertile
+							has_trait = eunuch_1
+							has_trait = beardless_eunuch
+							
+						}
+					}
+				}
+			}
+			order_by = age
+			save_scope_as = dude 
+			root = {
+				ordered_courtier = {
+					limit = {
+						AND = {
+							is_female = yes
+							is_married = no
+							is_betrothed = no
+							NOT = {
+								OR = {
+									is_pregnant = yes
+									has_trait = pregnant
+								}
+							}
+							age >= 16
+							age <= 40
+							NOT = {
+								OR = {
+									is_visibly_fertile = no
+									has_trait = infertile
+									dynasty = root.dynasty
+								}
+							}
+						}
+					}
+					order_by = age
+					save_scope_as = lady
+					if = {
+						limit = {
+							 is_concubine_of = root
+						}
+						root = {
+							remove_concubine = scope:lady
+						}
+					}
+					if = {
+						limit = {
+							exists = scope:dude
+						}
+						scope:dude = {
+							if = {
+								limit = {
+									AND = {
+										is_lowborn = yes
+										scope:lady = { 
+											NOT = { 
+												is_lowborn = yes 
+											}
+										}	
+									}
+								}
+								marry_matrilineal = scope:lady
+							}
+							else = {
+								marry = scope:lady
+							}
+							
+						}
+						scope:lady = { 
+							make_pregnant = { 
+								father = scope:dude 
+							}
+						}
+					}
+					
+				}
+					
+					
+			}
+		}
+	}
+	
+	option = {
+		name = "Baby Time"
+		every_courtier = { 
+			limit = { 
+				AND = {
+					is_male = yes
+					age >= 16
+					age <= 55
+					is_married = yes
+					NOT = {
+						OR = {
+							is_visibly_fertile = no
+							has_trait = infertile
+							has_trait = eunuch_1
+							has_trait = beardless_eunuch
+						}
+					}
+				} 
+			} 
+			primary_spouse = { 
+				limit = {
+					AND = {
+						is_female = yes
+						OR = {
+							is_pregnant = no
+							has_trait = pregnant
+						}
+						age >= 16
+						age <= 42
+						NOT = {
+							OR = {
+								is_visibly_fertile = no
+								has_trait = infertile
+							}
+						}
+					}
+				}
+				make_pregnant = { 
+					father = prev
+				}  
+			}
+		}
+		every_courtier = {
+			limit = { 
+				AND = { 
+					is_female = yes 
+					OR = {
+						is_pregnant = no
+						has_trait = pregnant
+					} 
+					age <= 42 
+					OR = { 
+						is_spouse_of = root 
+						is_concubine_of = root 
+					} 
+				} 
+			} 
+			make_pregnant = { 
+				father = root 
+			}
+		}
+		
+	}
+	
+	option = {
+		name = "Divorce time"
+		every_courtier = {
+			if = {
+				limit = {
+					AND = {
+						NOT = { 
+							OR = {
+								has_relation_lover = primary_spouse
+								has_relation_soulmate = primary_spouse
+							}
+						}
+						OR = {
+							AND = { 
+								is_male = yes
+								OR = {
+									age > 55
+									is_visibly_fertile = no
+									has_trait = infertile
+									has_trait = eunuch_1
+									has_trait = beardless_eunuch
+									has_trait = infirm
+								}
+							}
+							AND = { 
+								is_female = yes
+								OR = {
+									is_pregnant = no
+									has_trait = pregnant
+								}
+								OR = {
+									age > 42
+									is_visibly_fertile = no
+									has_trait = infertile
+									has_trait = infirm
+								}
+							}
+						}
+					}
+				}
+				divorce = primary_spouse
+			}
+		}
+		
+	}
+	option = {
+		name = "Fix Traits"
+		every_courtier = {
+			if = {
+				limit = {
+					has_trait = dwarf
+				}
+				remove_trait = dwarf
+			}
+			if = {
+				limit = {
+					OR = {
+						has_trait = tits_small_bad_1
+						has_trait = tits_small_bad_2
+						has_trait = tits_small_bad_3
+					}
+				}
+				remove_trait = tits_small_bad_1
+				remove_trait = tits_small_bad_2
+				remove_trait = tits_small_bad_3
+				add_trait = tits_big_good_1
+			}
+			if = {
+				limit = {
+					OR = {
+						has_trait = dick_small_bad_1
+						has_trait = dick_small_bad_2
+						has_trait = dick_small_bad_3
+					}
+				}
+				remove_trait = dick_small_bad_1
+				remove_trait = dick_small_bad_2
+				remove_trait = dick_small_bad_3
+				add_trait = dick_big_good_1
+			}
+			
+			if = {
+				limit = {
+					has_trait = infertile
+				}
+				remove_trait = infertile
+			}
+			if = {
+				limit = {
+					has_trait = reclusive
+				}
+				remove_trait = reclusive
+			}
+			if = {
+				limit = {
+					has_trait = comfort_eater
+				}
+				remove_trait = comfort_eater
+			}
+			if = {
+				limit = {
+					has_trait = rakish
+				}
+				remove_trait = rakish
+			}
+			if = {
+				limit = {
+					has_trait = wheezing
+				}
+				remove_trait = wheezing
+			}
+			if = {
+				limit = {
+					has_trait = spindly
+				}
+				remove_trait = spindly
+			}
+			if = {
+				limit = {
+					has_trait = gluttonous
+				}
+				remove_trait = gluttonous
+				add_trait = temperate
+			}
+			if = {
+				limit = {
+					has_trait = craven
+				}
+				remove_trait = craven
+				add_trait = brave
+			}
+			if = {
+				limit = {
+					has_trait = arrogant
+				}
+				remove_trait = arrogant
+				add_trait = calm
+			}
+			if = {
+				limit = {
+					has_trait = sadistic
+				}
+				remove_trait = sadistic
+				add_trait = just
+			}
+			if = {
+				limit = {
+					has_trait = lazy
+				}
+				remove_trait = lazy
+				add_trait = diligent
+			}
+			if = {
+				limit = {
+					has_trait = drunkard
+				}
+				remove_trait = drunkard
+			}
+			if = {
+				limit = {
+					has_trait = disloyal
+				}
+				remove_trait = disloyal
+				add_trait = loyal
+			}
+			if = {
+				limit = {
+					has_trait = hunchbacked
+				}
+				remove_trait = hunchbacked
+			}
+			if = {
+				limit = {
+					has_trait = hunchbacked
+				}
+				remove_trait = hunchbacked
+			}
+			if = {
+				limit = {
+					has_trait = bleeder
+				}
+				remove_trait = bleeder
+			}
+			if = {
+				limit = {
+					OR = {
+						has_trait = possessed_1
+						has_trait = possessed_genetic
+				}
+				remove_trait = possessed_1
+				remove_trait = possessed_genetic
+			}
+		}
+	}
+	}
+	
+	option = {
+		name = "Take Their Gold"
+		every_courtier = {
+			limit = { this.gold > 0 }
+			pay_short_term_gold = { target = root gold = this.gold }
+		}
+	}
+	
+	option = {
+		name = "Go back"
+		trigger_event = { id = cheatevents.1000 }
+	}
+}
+
+cheatevents.1002 = {
+	type = character_event
+	title = "Childrens"
+	desc = "Children Cheat Menu"
+	theme = feast_activity
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	override_background = { reference = tavern }
+	
+	option = {
+		name = "Fix Education"
+		every_courtier = {
+			limit = {
+				AND = {
+					OR = {
+						any_parent = {
+							is_courtier_of = root
+						}
+						any_parent = {
+							this = root
+						}
+						
+					}
+					age >= 16
+				}
+			}
+			if = {
+				limit= {
+					AND = {
+						has_trait = education_learning
+						NOT = { 
+							OR = {
+								has_trait = education_learning_4
+								has_trait = education_learning_5
+							}
+						}
+					}
+				}
+				set_trait_rank = {
+					trait = education_learning
+					rank = 4
+				}
+			}
+			if = {
+				limit= {
+					AND = {
+						has_trait = education_stewardship
+						NOT = { 
+							OR = {
+								has_trait = education_stewardship_4
+								has_trait = education_stewardship_5
+							}
+						}
+					}
+				}
+				set_trait_rank = {
+					trait = education_stewardship
+					rank = 4
+				}
+			}
+			if = {
+				limit= {
+					AND = {
+					has_trait = education_diplomacy
+					NOT = { 
+						OR = {
+							has_trait = education_diplomacy_4
+							has_trait = education_diplomacy_5
+						}
+					}
+					}
+				}
+				set_trait_rank = {
+					trait = education_diplomacy
+					rank = 4
+				}
+			}
+			if = {
+				limit= {
+					AND = {
+						has_trait = education_intrigue
+						NOT = { 
+							OR = {
+								has_trait = education_intrigue_4
+								has_trait = education_intrigue_5
+							}
+						}
+					}
+				}
+				set_trait_rank = {
+					trait = education_intrigue
+					rank = 4
+				}
+			}
+			if = {
+				limit= {
+					AND = {
+						has_trait = education_martial
+						NOT = { 
+							OR = {
+								has_trait = education_martial_4
+								has_trait = education_martial_5
+							}
+						}
+					}
+				}
+				set_trait_rank = {
+					trait = education_martial
+					rank = 4
+				}
+				if = {
+					limit = {
+						AND = {
+							is_female = yes
+							NOT = { has_trait = shieldmaiden }
+						}
+					}
+					add_trait = shieldmaiden
+				}
+				if = {
+					limit = {
+						NOT = {
+							has_trait = education_martial_prowess
+						}
+					}
+					if = {
+						limit = {
+							has_trait = intellect_good_3
+						}
+						add_trait = education_martial_prowess_4
+					}
+					if = {
+						limit = {
+							has_trait = intellect_good_2
+						}
+						add_trait = education_martial_prowess_3
+					}
+					if = {
+						limit = {
+							has_trait = intellect_good_1
+						}
+						add_trait = education_martial_prowess_2
+					}
+					else = {
+						add_trait = education_martial_prowess_1
+					}
+				}
+				if = {
+					limit = {
+						NOT = { has_trait = lifestyle_blademaster }
+					}
+					add_trait = lifestyle_blademaster
+				}
+				if = {
+					limit = {
+						has_trait = craven
+					}
+					remove_trait = craven
+				}
+				if = {
+					limit = {
+						NOT = {
+							has_trait = brave
+						}
+					}
+					add_trait = brave
+				}
+				
+			}
+			if = {
+				limit = { has_trait = intellect_good_3 }
+				if = {
+					limit = {
+						martial < 25
+					}
+					save_scope_value_as = {
+						name = martial_value
+						value = { value = 25 subtract = martial }
+					}
+					add_martial_skill = scope:martial_value
+				}
+				if = {
+					limit = {
+						diplomacy < 25
+					}
+					save_scope_value_as = {
+						name = diplomacy_value
+						value = { value = 25 subtract = diplomacy }
+					}
+					add_diplomacy_skill = scope:diplomacy_value
+				}
+				if = {
+					limit = {
+						learning < 25
+					}
+					save_scope_value_as = {
+						name = learning_value
+						value = { value = 25 subtract = learning }
+					}
+					add_learning_skill = scope:learning_value
+				}
+				if = {
+					limit = {
+						intrigue < 25
+					}
+					save_scope_value_as = {
+						name = intrigue_value
+						value = { value = 25 subtract = intrigue }
+					}
+					add_intrigue_skill = scope:intrigue_value
+				}
+				if = {
+					limit = {
+						stewardship < 25
+					}
+					save_scope_value_as = {
+						name = stewardship_value
+						value = { value = 25 subtract = stewardship }
+					}
+					add_stewardship_skill = scope:stewardship_value
+				}
+				if = {
+					limit = {
+						prowess < 26
+					}
+					save_scope_value_as = {
+						name = prowess_value
+						value = { value = 26 subtract = prowess }
+					}
+					add_prowess_skill = scope:prowess_value
+				}
+				
+			}
+			if = {
+				limit = { has_trait = intellect_good_2 }
+				if = {
+					limit = {
+						martial < 22
+					}
+					save_scope_value_as = {
+						name = martial_value
+						value = { value = 22 subtract = martial }
+					}
+					add_martial_skill = scope:martial_value
+				}
+				if = {
+					limit = {
+						diplomacy < 22
+					}
+					save_scope_value_as = {
+						name = diplomacy_value
+						value = { value = 22 subtract = diplomacy }
+					}
+					add_diplomacy_skill = scope:diplomacy_value
+				}
+				if = {
+					limit = {
+						learning < 22
+					}
+					save_scope_value_as = {
+						name = learning_value
+						value = { value = 22 subtract = learning }
+					}
+					add_learning_skill = scope:learning_value
+				}
+				if = {
+					limit = {
+						intrigue < 22
+					}
+					save_scope_value_as = {
+						name = intrigue_value
+						value = { value = 22 subtract = intrigue }
+					}
+					add_intrigue_skill = scope:intrigue_value
+				}
+				if = {
+					limit = {
+						stewardship < 22
+					}
+					save_scope_value_as = {
+						name = stewardship_value
+						value = { value = 22 subtract = stewardship }
+					}
+					add_stewardship_skill = scope:stewardship_value
+				}
+				if = {
+					limit = {
+						prowess < 23
+					}
+					save_scope_value_as = {
+						name = prowess_value
+						value = { value = 23 subtract = prowess }
+					}
+					add_prowess_skill = scope:prowess_value
+				}
+				
+			}
+			if = {
+				limit = { has_trait = intellect_good_1 }
+				if = {
+					limit = {
+						martial < 20
+					}
+					save_scope_value_as = {
+						name = martial_value
+						value = { value = 20 subtract = martial }
+					}
+					add_martial_skill = scope:martial_value
+				}
+				if = {
+					limit = {
+						diplomacy < 20
+					}
+					save_scope_value_as = {
+						name = diplomacy_value
+						value = { value = 20 subtract = diplomacy }
+					}
+					add_diplomacy_skill = scope:diplomacy_value
+				}
+				if = {
+					limit = {
+						learning < 20
+					}
+					save_scope_value_as = {
+						name = learning_value
+						value = { value = 20 subtract = learning }
+					}
+					add_learning_skill = scope:learning_value
+				}
+				if = {
+					limit = {
+						intrigue < 20
+					}
+					save_scope_value_as = {
+						name = intrigue_value
+						value = { value = 20 subtract = intrigue }
+					}
+					add_intrigue_skill = scope:intrigue_value
+				}
+				if = {
+					limit = {
+						stewardship < 20
+					}
+					save_scope_value_as = {
+						name = stewardship_value
+						value = { value = 20 subtract = stewardship }
+					}
+					add_stewardship_skill = scope:stewardship_value
+				}
+				if = {
+					limit = {
+						prowess < 21
+					}
+					save_scope_value_as = {
+						name = prowess_value
+						value = { value = 20 subtract = prowess }
+					}
+					add_prowess_skill = scope:prowess_value
+				}
+				
+			}
+			else = {
+				if = {
+					limit = {
+						martial < 16
+					}
+					save_scope_value_as = {
+						name = martial_value
+						value = { value = 16 subtract = martial }
+					}
+					add_martial_skill = scope:martial_value
+				}
+				if = {
+					limit = {
+						diplomacy < 16
+					}
+					save_scope_value_as = {
+						name = diplomacy_value
+						value = { value = 16 subtract = diplomacy }
+					}
+					add_diplomacy_skill = scope:diplomacy_value
+				}
+				if = {
+					limit = {
+						learning < 16
+					}
+					save_scope_value_as = {
+						name = learning_value
+						value = { value = 16 subtract = learning }
+					}
+					add_learning_skill = scope:learning_value
+				}
+				if = {
+					limit = {
+						intrigue < 16
+					}
+					save_scope_value_as = {
+						name = intrigue_value
+						value = { value = 16 subtract = intrigue }
+					}
+					add_intrigue_skill = scope:intrigue_value
+				}
+				if = {
+					limit = {
+						stewardship < 16
+					}
+					save_scope_value_as = {
+						name = stewardship_value
+						value = { value = 16 subtract = stewardship }
+					}
+					add_stewardship_skill = scope:stewardship_value
+				}
+				if = {
+					limit = {
+						prowess < 17
+					}
+					save_scope_value_as = {
+						name = prowess_value
+						value = { value = 17 subtract = prowess }
+					}
+					add_prowess_skill = scope:prowess_value
+				}
+			}
+		}
+		 
+	}
+	
+	option = {
+		name = "Fix Culture/Religion"
+		every_courtier = {
+			limit = {
+				AND = {
+					OR = {
+						any_parent = {
+							is_courtier_of = root
+						}
+						any_parent = {
+							this = root
+						}
+						
+					}
+					age >= 16
+					NOT = {
+						OR = {
+							has_faith = root.faith
+							has_culture = root.culture
+						}
+					}
+				}
+			}
+			if = {
+				limit = {
+					NOT = { has_faith = root.faith }
+				}
+				set_character_faith = ROOT.faith
+			}
+			if = {
+				limit = {
+					NOT = { has_culture = root.culture }
+				}
+				set_culture = ROOT.culture 
+			}
+		}
+		 
+	}
+	
+	
+	option = {
+		name = "Back"
+		trigger_event = { id = cheatevents.1000 } 
+	}
+	
+	option = {
+		name = "Exit"
+	}
+}
+cheatevents.1003 = {
+	type = character_event
+	title = "Dynasty"
+	desc = "Dynasty Cheat Menu"
+	theme = feast_activity
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	override_background = { reference = tavern }
+	
+	option = {
+		name = "Dynasty Baby time"
+		root.dynasty = {
+			every_dynasty_member = {
+				limit = {
+					AND = {
+						is_adult = yes
+						dynasty = root.dynasty
+					}
+				}
+				if = { 
+					limit = { 
+						AND = { 
+							is_male = yes
+							NOT = {
+								OR = {
+									age > 55
+									is_visibly_fertile = no
+									has_trait = infertile
+									has_trait = eunuch_1
+									has_trait = beardless_eunuch
+									has_trait = infirm
+								}
+							}
+						}
+					} 
+					every_spouse = {
+						limit = {
+							AND = { 
+								is_female = yes
+								NOT = {
+									OR = {
+										is_pregnant = yes
+										has_trait = pregnant
+									}
+									OR = {
+										age > 42
+										is_visibly_fertile = no
+										has_trait = infertile
+										has_trait = infirm
+									}
+								}	
+							}
+						}
+						make_pregnant = { 
+							father = prev
+						}
+					}
+					every_courtier = {
+						limit = {
+							AND = { 
+								is_female = yes
+								is_concubine_of = prev
+								NOT = {
+									OR = {
+										is_pregnant = yes
+										has_trait = pregnant
+									}
+									OR = {
+										age > 42
+										is_visibly_fertile = no
+										has_trait = infertile
+										has_trait = infirm
+									}
+								}	
+							}
+						}
+						make_pregnant = { 
+							father = prev
+						}
+					}
+				}
+				if = {
+					limit = { 
+						AND = { 
+							is_female = yes
+							NOT = {
+								OR = {
+									is_pregnant = yes
+									has_trait = pregnant
+								}
+								OR = {
+									age > 42
+									is_visibly_fertile = no
+									has_trait = infertile
+									has_trait = infirm
+								}
+							}
+								
+						}
+					}
+					if = {
+						limit = {
+							is_concubine = yes
+						}
+						liege = {
+							limit = { prev = { is_concubine_of = this } }
+							prev =  {
+								make_pregnant = {
+									father = prev
+								}
+							}
+						}		
+					}	
+					else_if = {
+						limit = { primary_spouse = { is_alive = yes } }
+						make_pregnant = {
+							father = primary_spouse
+						}
+					}
+					else_if = {
+						limit = {
+							random_concubine = {
+								is_alive = this
+								save_scope_as = daddy
+							}
+						}
+						make_pregnant = {
+							father = scope:daddy
+						}
+					}
+				}
+			}
+		}
+	}
+	option = {
+		name = "Dynasty Marry"
+		root.dynasty = {			
+			every_dynasty_member = {
+				limit = {
+					AND = {
+						is_alive = yes
+						is_adult = yes
+						is_married = no
+						is_betrothed = no
+						dynasty = root.dynasty
+						liege = root
+					}
+				}
+				
+				if = {
+					limit = {
+						AND = {
+							is_male = yes
+							age >= 16
+							age <= 60
+							NOT = {
+								OR = {
+									is_visibly_fertile = no
+									has_trait = infertile
+									has_trait = eunuch_1
+									has_trait = beardless_eunuch
+								}
+							}
+						}
+					}
+					save_scope_as = family_dude
+					root = { 
+						every_courtier = {
+							limit = {
+								AND = {
+									is_female = yes
+									NOT = {
+										OR = {
+											is_pregnant = yes
+											has_trait = pregnant
+										}
+									}
+									age >= 16
+									age <= 42
+									NOT = {
+										OR = {
+											is_visibly_fertile = yes
+											has_trait = infertile
+										}
+									}
+									NOT = { is_close_family_of = scope:family_dude }
+								}
+							}
+							save_scope_as = chick
+						}
+					}
+					if = {
+						limit = {
+							scope:chick = { is_concubine_of = root }
+						}
+						root = {
+							remove_concubine = scope:chick
+						}
+						scope:family_dude = { marry = scope:chick }
+					}
+					else = {
+						scope:family_dude = { marry = scope:chick }
+					}
+				}
+				if = {
+					limit = {
+						AND = {
+							is_female = yes
+							OR = {
+								is_pregnant = no
+								has_trait = pregnant
+							}
+							age >= 16
+							age <= 45
+							NOT = {
+								OR = {
+									is_visibly_fertile = no
+									has_trait = infertile
+								}
+							}
+						}
+					}
+					save_scope_as = family_chick
+					root = { 
+						every_courtier = {
+							limit = {
+								AND = {
+									is_male = yes
+									age >= 16
+									age <= 55
+									NOT = {
+										OR = {
+											is_visibly_fertile = no
+											has_trait = infertile
+											has_trait = eunuch_1
+											has_trait = beardless_eunuch
+										}
+									}
+									NOT = { is_close_family_of = scope:family_chick }
+								}
+							}
+							save_scope_as = dude
+						}
+					}
+					if = {
+						limit = {
+							scope:dude = { is_concubine_of = root }
+						}
+						root = {
+							remove_concubine = scope:dude
+						}
+						scope:dude = { marry_matrilineal = scope:family_chick }
+					}
+					else = {
+						scope:dude = { marry_matrilineal = scope:family_chick }
+					}
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = "Dynasty Traits"
+		root.dynasty = {
+			every_dynasty_member = {
+				limit = { is_alive = yes }
+				if = {
+					limit = { has_trait = intellect_bad }
+					remove_trait = intellect_bad_1
+					remove_trait = intellect_bad_2
+					remove_trait = intellect_bad_3
+				}
+				if = {
+					limit = { has_trait = intellect_good }
+					change_trait_rank = {
+						trait = intellect_good
+						rank = 1
+						max = 3
+					}
+				}
+				if = {
+					limit = { has_trait = beauty_bad }
+					remove_trait = beauty_bad_1
+					remove_trait = beauty_bad_2
+					remove_trait = beauty_bad_3
+				}
+				if = {
+					limit = { has_trait = beauty_good }
+					change_trait_rank = {
+						trait = beauty_good
+						rank = 1
+						max = 3
+					}
+				}
+				if = {
+					limit = { has_trait = physique_good }
+					change_trait_rank = {
+						trait = physique_good
+						rank = 1
+						max = 3
+					}
+					
+				}
+				if = {
+					limit = { has_trait = physique_bad }
+					remove_trait = physique_bad_1
+					remove_trait = physique_bad_2
+					remove_trait = physique_bad_3
+					
+				}
+				if = {
+					limit = { 
+						AND = {
+							NOT = { has_trait = intellect_good } 
+							any_parent = { has_trait = intellect_good }
+						}
+					}
+					add_trait = intellect_good_1
+				}
+				if = {
+					limit = { 
+						AND = {
+							NOT = { has_trait = beauty_good } 
+							any_parent = { has_trait = beauty_good }
+						}
+					}
+					add_trait = beauty_good_1
+				}
+				if = {
+					limit = { 
+						AND = {
+							NOT = { has_trait = physique_good } 
+							any_parent = { has_trait = physique_good }
+						}
+					}
+					add_trait = physique_good_1
+				}
+				if = {
+					limit = { 
+						AND = {
+							NOT = { has_trait = intellect_good } 
+							any_parent = { has_trait = intellect_good }
+						}
+					}
+					add_trait = intellect_good_1
+				}
+				if = {
+					limit = { has_trait = hunchbacked}
+					remove_trait = hunchbacked
+				}
+				if = {
+					limit = { has_trait = dwarf }
+					remove_trait = dwarf
+				}
+				if = {
+					limit = { has_trait = clubfooted }
+					remove_trait = clubfooted
+				}
+				if = {
+					limit = { has_trait = possessed_genetic }
+					remove_trait = possessed_genetic
+				}
+				if = {
+					limit = { has_trait = lisping }
+					remove_trait = lisping
+				}
+				if = {
+					limit = { has_trait = bleeder }
+					remove_trait = bleeder
+				}
+				if = {
+					limit = { has_trait = depressed_genetic }
+					remove_trait = depressed_genetic
+				}
+			}
+		}
+	}
+	
+	
+	option = {
+		name = "Go back"
+		trigger_event = { id = cheatevents.1000 }
+	}
+	
+}
+
+cheatevents.1009 = {
+	type = character_event
+	title = "Courtiers Marry"
+	desc = "Menu to make major alterations to the courtiers in your court or camp."
+	theme = feast_activity
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	override_background = { reference = tavern }
+
+	option = {
+		name = "Cycle Courtiers"
+		ordered_courtier = {
+		    limit = {
+		        AND = {
+		            age >= 16
+		            age <= 50
+		            is_married = no
+		            is_betrothed = no
+		            is_female = no
+		            NOT = {
+		                OR = {
+		                    is_visibly_fertile = no
+		                    has_trait = infertile
+		                    has_trait = eunuch_1
+		                    has_trait = beardless_eunuch
+		                }
+		            }
+		        }
+		    }
+		    order_by = age
+		    save_scope_as = dude
+
+		    trigger_event = cheatevents.1010
+		}
+	    }
+}
+
+
+cheatevents.1010 = {
+    type = character_event
+    title = "Marriage for [FROM.GetName]"
+    desc = "Marrying [FROM.GetName] to a suitable female in the court."
+    is_triggered_only = yes
+
+    immediate = {
+        ordered_courtier = {
+            limit = {
+                AND = {
+                    is_female = yes
+                    is_married = no
+                    is_betrothed = no
+                    NOT = {
+                        OR = {
+                            is_pregnant = yes
+                            has_trait = pregnant
+                        }
+                    }
+                    age >= 16
+                    age <= 40
+                    NOT = {
+                        OR = {
+                            is_visibly_fertile = no
+                            has_trait = infertile
+                            dynasty = root.dynasty
+                        }
+                    }
+                }
+            }
+            order_by = age
+            save_scope_as = lady
+
+            if = {
+                limit = {
+                    scope:lady = { is_concubine_of = root }
+                }
+                root = {
+                    remove_concubine = scope:lady
+                }
+            }
+
+            if = {
+                limit = {
+                    exists = scope:lady
+                }
+                scope:root = {
+                    if = {
+                        limit = {
+                            AND = {
+                                is_lowborn = yes
+                                scope:lady = { 
+                                    NOT = { 
+                                        is_lowborn = yes 
+                                    }
+                                }
+                            }
+                        }
+                        marry_matrilineal = scope:lady
+                    }
+                    else = {
+                        marry = scope:lady
+                    }
+                }
+                scope:lady = {
+                    make_pregnant = {
+                        father = root
+                    }
+                }
+            }
+        }
+    }
+}

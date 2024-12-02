@@ -1,0 +1,32 @@
+namespace = cheatevents
+
+cheatevents.1000 = {
+	type = character_event
+	title = "Cheat Event 1000"
+	desc = "Main Cheat Menu"
+	theme = feast_activity
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	override_background = { reference = tavern }
+	
+	option = {
+		name = "Courtiers"
+		trigger_event = { id = cheatevents.1001 } 
+	}
+	
+	option = {
+		name = "Children"
+		trigger_event = { id = cheatevents.1002 } 
+	}
+	
+	option = {
+		name = "Dynasty"
+		trigger_event = { id = cheatevents.1003 } 
+	}
+	
+	option = {
+		name = "Exit"
+	}
+}

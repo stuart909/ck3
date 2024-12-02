@@ -1,0 +1,429 @@
+namespace = cheatevents
+
+
+cheatevents.1003 = {
+	type = character_event
+	title = "Dynasty"
+	desc = "Dynasty Cheat Menu"
+	theme = feast_activity
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	override_background = { reference = tavern }
+	
+	option = {
+		name = "Dynasty Baby time"
+		root.dynasty = {
+			every_dynasty_member = {
+				limit = {
+					AND = {
+						is_adult = yes
+						dynasty = root.dynasty
+					}
+				}
+				if = { 
+					limit = { 
+						AND = { 
+							is_male = yes
+							NOT = {
+								OR = {
+									age > 55
+									is_visibly_fertile = no
+									has_trait = infertile
+									has_trait = eunuch_1
+									has_trait = beardless_eunuch
+									has_trait = infirm
+								}
+							}
+						}
+					} 
+					every_spouse = {
+						limit = {
+							AND = { 
+								is_female = yes
+								NOT = {
+									OR = {
+										is_pregnant = yes
+										has_trait = pregnant
+									}
+									OR = {
+										age > 42
+										is_visibly_fertile = no
+										has_trait = infertile
+										has_trait = infirm
+									}
+								}	
+							}
+						}
+						make_pregnant = { 
+							father = prev
+						}
+					}
+					every_courtier = {
+						limit = {
+							AND = { 
+								is_female = yes
+								is_concubine_of = prev
+								NOT = {
+									OR = {
+										is_pregnant = yes
+										has_trait = pregnant
+									}
+									OR = {
+										age > 42
+										is_visibly_fertile = no
+										has_trait = infertile
+										has_trait = infirm
+									}
+								}	
+							}
+						}
+						make_pregnant = { 
+							father = prev
+						}
+					}
+				}
+				if = {
+					limit = { 
+						AND = { 
+							is_female = yes
+							NOT = {
+								OR = {
+									is_pregnant = yes
+									has_trait = pregnant
+								}
+								OR = {
+									age > 42
+									is_visibly_fertile = no
+									has_trait = infertile
+									has_trait = infirm
+								}
+							}
+								
+						}
+					}
+					if = {
+						limit = {
+							is_concubine = yes
+						}
+						liege = {
+							limit = { prev = { is_concubine_of = this } }
+							prev =  {
+								make_pregnant = {
+									father = prev
+								}
+							}
+						}		
+					}	
+					else_if = {
+						limit = { primary_spouse = { is_alive = yes } }
+						make_pregnant = {
+							father = primary_spouse
+						}
+					}
+					else_if = {
+						limit = {
+							random_concubine = {
+								is_alive = this
+								save_scope_as = daddy
+							}
+						}
+						make_pregnant = {
+							father = scope:daddy
+						}
+					}
+				}
+			}
+		}
+	}
+	option = {
+		name = "Dynasty Marry"
+		root.dynasty = {			
+			every_dynasty_member = {
+				limit = {
+					AND = {
+						is_alive = yes
+						is_adult = yes
+						is_married = no
+						is_betrothed = no
+						dynasty = root.dynasty
+						liege = root
+					}
+				}
+				
+				if = {
+					limit = {
+						AND = {
+							is_male = yes
+							age >= 16
+							age <= 60
+							NOT = {
+								OR = {
+									is_visibly_fertile = no
+									has_trait = infertile
+									has_trait = eunuch_1
+									has_trait = beardless_eunuch
+								}
+							}
+						}
+					}
+					save_scope_as = family_dude
+					root = { 
+						every_courtier = {
+							limit = {
+								AND = {
+									is_female = yes
+									NOT = {
+										OR = {
+											is_pregnant = yes
+											has_trait = pregnant
+										}
+									}
+									age >= 16
+									age <= 42
+									NOT = {
+										OR = {
+											is_visibly_fertile = yes
+											has_trait = infertile
+										}
+									}
+									NOT = { is_close_family_of = scope:family_dude }
+								}
+							}
+							save_scope_as = chick
+						}
+					}
+					if = {
+						limit = {
+							scope:chick = { is_concubine_of = root }
+						}
+						root = {
+							remove_concubine = scope:chick
+						}
+						scope:family_dude = { marry = scope:chick }
+					}
+					else = {
+						scope:family_dude = { marry = scope:chick }
+					}
+				}
+				if = {
+					limit = {
+						AND = {
+							is_female = yes
+							OR = {
+								is_pregnant = no
+								has_trait = pregnant
+							}
+							age >= 16
+							age <= 45
+							NOT = {
+								OR = {
+									is_visibly_fertile = no
+									has_trait = infertile
+								}
+							}
+						}
+					}
+					save_scope_as = family_chick
+					root = { 
+						every_courtier = {
+							limit = {
+								AND = {
+									is_male = yes
+									age >= 16
+									age <= 55
+									NOT = {
+										OR = {
+											is_visibly_fertile = no
+											has_trait = infertile
+											has_trait = eunuch_1
+											has_trait = beardless_eunuch
+										}
+									}
+									NOT = { is_close_family_of = scope:family_chick }
+								}
+							}
+							save_scope_as = dude
+						}
+					}
+					if = {
+						limit = {
+							scope:dude = { is_concubine_of = root }
+						}
+						root = {
+							remove_concubine = scope:dude
+						}
+						scope:dude = { marry_matrilineal = scope:family_chick }
+					}
+					else = {
+						scope:dude = { marry_matrilineal = scope:family_chick }
+					}
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = "Dynasty Traits"
+		root.dynasty = {
+			every_dynasty_member = {
+				limit = { is_alive = yes }
+				if = {
+					limit = { has_trait = intellect_bad }
+					remove_trait = intellect_bad_1
+					remove_trait = intellect_bad_2
+					remove_trait = intellect_bad_3
+				}
+				if = {
+					limit = { has_trait = intellect_good }
+					change_trait_rank = {
+						trait = intellect_good
+						rank = 1
+						max = 3
+					}
+				}
+				if = {
+					limit = { has_trait = beauty_bad }
+					remove_trait = beauty_bad_1
+					remove_trait = beauty_bad_2
+					remove_trait = beauty_bad_3
+				}
+				if = {
+					limit = { has_trait = beauty_good }
+					change_trait_rank = {
+						trait = beauty_good
+						rank = 1
+						max = 3
+					}
+				}
+				if = {
+					limit = { has_trait = physique_good }
+					change_trait_rank = {
+						trait = physique_good
+						rank = 1
+						max = 3
+					}
+					
+				}
+				if = {
+					limit = { has_trait = physique_bad }
+					remove_trait = physique_bad_1
+					remove_trait = physique_bad_2
+					remove_trait = physique_bad_3
+					
+				}
+				if = {
+					limit = { 
+						AND = {
+							NOT = { has_trait = intellect_good } 
+							any_parent = { has_trait = intellect_good }
+						}
+					}
+					add_trait = intellect_good_1
+				}
+				if = {
+					limit = { 
+						AND = {
+							NOT = { has_trait = beauty_good } 
+							any_parent = { has_trait = beauty_good }
+						}
+					}
+					add_trait = beauty_good_1
+				}
+				if = {
+					limit = { 
+						AND = {
+							NOT = { has_trait = physique_good } 
+							any_parent = { has_trait = physique_good }
+						}
+					}
+					add_trait = physique_good_1
+				}
+				if = {
+					limit = { 
+						AND = {
+							NOT = { has_trait = intellect_good } 
+							any_parent = { has_trait = intellect_good }
+						}
+					}
+					add_trait = intellect_good_1
+				}
+				if = {
+					limit = { has_trait = hunchbacked}
+					remove_trait = hunchbacked
+				}
+				if = {
+					limit = { has_trait = dwarf }
+					remove_trait = dwarf
+				}
+				if = {
+					limit = { has_trait = clubfooted }
+					remove_trait = clubfooted
+				}
+				if = {
+					limit = { has_trait = possessed_genetic }
+					remove_trait = possessed_genetic
+				}
+				if = {
+					limit = { has_trait = lisping }
+					remove_trait = lisping
+				}
+				if = {
+					limit = { has_trait = bleeder }
+					remove_trait = bleeder
+				}
+				if = {
+					limit = { has_trait = depressed_genetic }
+					remove_trait = depressed_genetic
+				}
+			}
+		}
+	}
+	
+	
+	option = {
+		name = "Go back"
+		trigger_event = { id = cheatevents.1000 }
+	}
+	
+}
+
+cheatevents.1009 = {
+	type = character_event
+	title = "Courtiers Marry"
+	desc = "Menu to make major alterations to the courtiers in your court or camp."
+	theme = feast_activity
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	override_background = { reference = tavern }
+
+	option = {
+		name = "Cycle Courtiers"
+		ordered_courtier = {
+		    limit = {
+		        AND = {
+		            age >= 16
+		            age <= 50
+		            is_married = no
+		            is_betrothed = no
+		            is_female = no
+		            NOT = {
+		                OR = {
+		                    is_visibly_fertile = no
+		                    has_trait = infertile
+		                    has_trait = eunuch_1
+		                    has_trait = beardless_eunuch
+		                }
+		            }
+		        }
+		    }
+		    order_by = age
+		    save_scope_as = dude
+
+		    trigger_event = cheatevents.1010
+		}
+	    }
+}

@@ -1,0 +1,480 @@
+namespace = cheatevents
+
+cheatevents.1002 = {
+	type = character_event
+	title = "Childrens"
+	desc = "Children Cheat Menu"
+	theme = feast_activity
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	override_background = { reference = tavern }
+	
+	option = {
+		name = "Fix Education"
+		every_courtier = {
+			limit = {
+				AND = {
+					OR = {
+						any_parent = {
+							is_courtier_of = root
+						}
+						any_parent = {
+							this = root
+						}
+						
+					}
+					age >= 16
+				}
+			}
+			if = {
+				limit= {
+					AND = {
+						has_trait = education_learning
+						NOT = { 
+							OR = {
+								has_trait = education_learning_4
+								has_trait = education_learning_5
+							}
+						}
+					}
+				}
+				set_trait_rank = {
+					trait = education_learning
+					rank = 4
+				}
+			}
+			if = {
+				limit= {
+					AND = {
+						has_trait = education_stewardship
+						NOT = { 
+							OR = {
+								has_trait = education_stewardship_4
+								has_trait = education_stewardship_5
+							}
+						}
+					}
+				}
+				set_trait_rank = {
+					trait = education_stewardship
+					rank = 4
+				}
+			}
+			if = {
+				limit= {
+					AND = {
+					has_trait = education_diplomacy
+					NOT = { 
+						OR = {
+							has_trait = education_diplomacy_4
+							has_trait = education_diplomacy_5
+						}
+					}
+					}
+				}
+				set_trait_rank = {
+					trait = education_diplomacy
+					rank = 4
+				}
+			}
+			if = {
+				limit= {
+					AND = {
+						has_trait = education_intrigue
+						NOT = { 
+							OR = {
+								has_trait = education_intrigue_4
+								has_trait = education_intrigue_5
+							}
+						}
+					}
+				}
+				set_trait_rank = {
+					trait = education_intrigue
+					rank = 4
+				}
+			}
+			if = {
+				limit= {
+					AND = {
+						has_trait = education_martial
+						NOT = { 
+							OR = {
+								has_trait = education_martial_4
+								has_trait = education_martial_5
+							}
+						}
+					}
+				}
+				set_trait_rank = {
+					trait = education_martial
+					rank = 4
+				}
+				if = {
+					limit = {
+						AND = {
+							is_female = yes
+							NOT = { has_trait = shieldmaiden }
+						}
+					}
+					add_trait = shieldmaiden
+				}
+				if = {
+					limit = {
+						NOT = {
+							has_trait = education_martial_prowess
+						}
+					}
+					if = {
+						limit = {
+							has_trait = intellect_good_3
+						}
+						add_trait = education_martial_prowess_4
+					}
+					if = {
+						limit = {
+							has_trait = intellect_good_2
+						}
+						add_trait = education_martial_prowess_3
+					}
+					if = {
+						limit = {
+							has_trait = intellect_good_1
+						}
+						add_trait = education_martial_prowess_2
+					}
+					else = {
+						add_trait = education_martial_prowess_1
+					}
+				}
+				if = {
+					limit = {
+						NOT = { has_trait = lifestyle_blademaster }
+					}
+					add_trait = lifestyle_blademaster
+				}
+				if = {
+					limit = {
+						has_trait = craven
+					}
+					remove_trait = craven
+				}
+				if = {
+					limit = {
+						NOT = {
+							has_trait = brave
+						}
+					}
+					add_trait = brave
+				}
+				
+			}
+			if = {
+				limit = { has_trait = intellect_good_3 }
+				if = {
+					limit = {
+						martial < 25
+					}
+					save_scope_value_as = {
+						name = martial_value
+						value = { value = 25 subtract = martial }
+					}
+					add_martial_skill = scope:martial_value
+				}
+				if = {
+					limit = {
+						diplomacy < 25
+					}
+					save_scope_value_as = {
+						name = diplomacy_value
+						value = { value = 25 subtract = diplomacy }
+					}
+					add_diplomacy_skill = scope:diplomacy_value
+				}
+				if = {
+					limit = {
+						learning < 25
+					}
+					save_scope_value_as = {
+						name = learning_value
+						value = { value = 25 subtract = learning }
+					}
+					add_learning_skill = scope:learning_value
+				}
+				if = {
+					limit = {
+						intrigue < 25
+					}
+					save_scope_value_as = {
+						name = intrigue_value
+						value = { value = 25 subtract = intrigue }
+					}
+					add_intrigue_skill = scope:intrigue_value
+				}
+				if = {
+					limit = {
+						stewardship < 25
+					}
+					save_scope_value_as = {
+						name = stewardship_value
+						value = { value = 25 subtract = stewardship }
+					}
+					add_stewardship_skill = scope:stewardship_value
+				}
+				if = {
+					limit = {
+						prowess < 26
+					}
+					save_scope_value_as = {
+						name = prowess_value
+						value = { value = 26 subtract = prowess }
+					}
+					add_prowess_skill = scope:prowess_value
+				}
+				
+			}
+			if = {
+				limit = { has_trait = intellect_good_2 }
+				if = {
+					limit = {
+						martial < 22
+					}
+					save_scope_value_as = {
+						name = martial_value
+						value = { value = 22 subtract = martial }
+					}
+					add_martial_skill = scope:martial_value
+				}
+				if = {
+					limit = {
+						diplomacy < 22
+					}
+					save_scope_value_as = {
+						name = diplomacy_value
+						value = { value = 22 subtract = diplomacy }
+					}
+					add_diplomacy_skill = scope:diplomacy_value
+				}
+				if = {
+					limit = {
+						learning < 22
+					}
+					save_scope_value_as = {
+						name = learning_value
+						value = { value = 22 subtract = learning }
+					}
+					add_learning_skill = scope:learning_value
+				}
+				if = {
+					limit = {
+						intrigue < 22
+					}
+					save_scope_value_as = {
+						name = intrigue_value
+						value = { value = 22 subtract = intrigue }
+					}
+					add_intrigue_skill = scope:intrigue_value
+				}
+				if = {
+					limit = {
+						stewardship < 22
+					}
+					save_scope_value_as = {
+						name = stewardship_value
+						value = { value = 22 subtract = stewardship }
+					}
+					add_stewardship_skill = scope:stewardship_value
+				}
+				if = {
+					limit = {
+						prowess < 23
+					}
+					save_scope_value_as = {
+						name = prowess_value
+						value = { value = 23 subtract = prowess }
+					}
+					add_prowess_skill = scope:prowess_value
+				}
+				
+			}
+			if = {
+				limit = { has_trait = intellect_good_1 }
+				if = {
+					limit = {
+						martial < 20
+					}
+					save_scope_value_as = {
+						name = martial_value
+						value = { value = 20 subtract = martial }
+					}
+					add_martial_skill = scope:martial_value
+				}
+				if = {
+					limit = {
+						diplomacy < 20
+					}
+					save_scope_value_as = {
+						name = diplomacy_value
+						value = { value = 20 subtract = diplomacy }
+					}
+					add_diplomacy_skill = scope:diplomacy_value
+				}
+				if = {
+					limit = {
+						learning < 20
+					}
+					save_scope_value_as = {
+						name = learning_value
+						value = { value = 20 subtract = learning }
+					}
+					add_learning_skill = scope:learning_value
+				}
+				if = {
+					limit = {
+						intrigue < 20
+					}
+					save_scope_value_as = {
+						name = intrigue_value
+						value = { value = 20 subtract = intrigue }
+					}
+					add_intrigue_skill = scope:intrigue_value
+				}
+				if = {
+					limit = {
+						stewardship < 20
+					}
+					save_scope_value_as = {
+						name = stewardship_value
+						value = { value = 20 subtract = stewardship }
+					}
+					add_stewardship_skill = scope:stewardship_value
+				}
+				if = {
+					limit = {
+						prowess < 21
+					}
+					save_scope_value_as = {
+						name = prowess_value
+						value = { value = 20 subtract = prowess }
+					}
+					add_prowess_skill = scope:prowess_value
+				}
+				
+			}
+			else = {
+				if = {
+					limit = {
+						martial < 16
+					}
+					save_scope_value_as = {
+						name = martial_value
+						value = { value = 16 subtract = martial }
+					}
+					add_martial_skill = scope:martial_value
+				}
+				if = {
+					limit = {
+						diplomacy < 16
+					}
+					save_scope_value_as = {
+						name = diplomacy_value
+						value = { value = 16 subtract = diplomacy }
+					}
+					add_diplomacy_skill = scope:diplomacy_value
+				}
+				if = {
+					limit = {
+						learning < 16
+					}
+					save_scope_value_as = {
+						name = learning_value
+						value = { value = 16 subtract = learning }
+					}
+					add_learning_skill = scope:learning_value
+				}
+				if = {
+					limit = {
+						intrigue < 16
+					}
+					save_scope_value_as = {
+						name = intrigue_value
+						value = { value = 16 subtract = intrigue }
+					}
+					add_intrigue_skill = scope:intrigue_value
+				}
+				if = {
+					limit = {
+						stewardship < 16
+					}
+					save_scope_value_as = {
+						name = stewardship_value
+						value = { value = 16 subtract = stewardship }
+					}
+					add_stewardship_skill = scope:stewardship_value
+				}
+				if = {
+					limit = {
+						prowess < 17
+					}
+					save_scope_value_as = {
+						name = prowess_value
+						value = { value = 17 subtract = prowess }
+					}
+					add_prowess_skill = scope:prowess_value
+				}
+			}
+		}
+		 
+	}
+	
+	option = {
+		name = "Fix Culture/Religion"
+		every_courtier = {
+			limit = {
+				AND = {
+					OR = {
+						any_parent = {
+							is_courtier_of = root
+						}
+						any_parent = {
+							this = root
+						}
+						
+					}
+					age >= 16
+					NOT = {
+						OR = {
+							has_faith = root.faith
+							has_culture = root.culture
+						}
+					}
+				}
+			}
+			if = {
+				limit = {
+					NOT = { has_faith = root.faith }
+				}
+				set_character_faith = ROOT.faith
+			}
+			if = {
+				limit = {
+					NOT = { has_culture = root.culture }
+				}
+				set_culture = ROOT.culture 
+			}
+		}
+		 
+	}
+	
+	
+	option = {
+		name = "Back"
+		trigger_event = { id = cheatevents.1000 } 
+	}
+	
+	option = {
+		name = "Exit"
+	}
+}
